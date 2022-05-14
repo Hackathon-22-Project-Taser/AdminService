@@ -3,15 +3,11 @@ package de.unistuttgart.hackathon.taser.AdminService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDateTime;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Queue;
+import java.util.List;
 
 @RestController
 public class AdminController {
@@ -20,30 +16,53 @@ public class AdminController {
     @Autowired
     private AdminRepository adminRepository;
 
-     /**
+    /**
      * Create a Room with the given identifier
+     *
      * @param identifier of the queue to create
      */
     @PostMapping("/admin/room/create/{identifier}")
-    public void createRoom(@PathVariable final String identifier){
+    public Room createRoom(@PathVariable final String identifier) {
         logger.info("create Room with identifier (roomNumber):" + identifier);
-        service.startQueue(identifier);
-        adminRepository.save(new Room(identifier));
+        service.createQueue(identifier);
+        Room room = new Room(identifier);
+        adminRepository.save(room);
+        return room;
     }
 
     /**
-     * Start a lecture
+     * The getter returns all rooms currently saved in the database
+     *
+     * @return
      */
-    @PostMapping("admin/realtime/start/{identifier}")
-    public void startRealtimeEvent(@PathVariable final String identifier) {
-        service.startRealTimeEvent(identifier);
+    @GetMapping("/admin/rooms")
+    public List<Room> getRooms() {
+        logger.info("try to get all rooms");
+        return adminRepository.findAll();
     }
 
     /**
-     * Stop a lecture
+     * The getter returns all rooms currently saved in the database
+     *
+     * @return
      */
-    @PostMapping("admin/realtime/stop/{identifier}")
-    public void stopRealtimeEvent(@PathVariable final String identifier) {
-       service.endRealTimeEvent(identifier);
+    @DeleteMapping("/admin/room/delete/{identifier}")
+    public Room deleteRoom(@PathVariable final String identifier) {
+        logger.info("try to delete room: " + identifier);
+        if (adminRepository.findById(identifier).isEmpty()) {
+            Room deletedRoom = adminRepository.findById(identifier).get();
+            adminRepository.deleteById(identifier);
+            return deletedRoom;
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                String.format("Room with ID %s not found!", identifier));
+    }
+
+    /**
+     * Flushes the Queues
+     */
+    @PostMapping("admin/realtime/start/")
+    public void flushQueues() {
+        service.flushQueues();
     }
 }

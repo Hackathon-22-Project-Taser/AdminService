@@ -15,7 +15,11 @@ public class AdminService {
         logger.info("AdminService constructor");
     }
 
-    public void startQueue(String queueId){
+    /**
+     * This Method calls the QueueREST Controller and tries to start a queue for a specific Room.
+     * @param queueId Id for a specific Room
+     */
+    public void createQueue(String queueId){
         logger.info("try to start the queue: " + queueId);
         webClient =  WebClient.create("http://localhost:8090/");
         webClient.post()
@@ -25,13 +29,16 @@ public class AdminService {
                 .block();
     }
 
-    public void startRealTimeEvent(String queueId){
+    /**
+     * This Method calls the QueueRest Controller and tries to flush all queues.
+     */
+    public void flushQueues(){
+        logger.info("try to flushes the queues");
         webClient =  WebClient.create("http://localhost:8090/");
-        logger.info("try to start the real time event: " + queueId);
-    }
-
-    public void endRealTimeEvent(String queueId){
-        webClient =  WebClient.create("http://localhost:8090/");
-        logger.info("try to end the real time event: " + queueId);
+        webClient.post()
+                .uri("/queues/flush")
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
     }
 }

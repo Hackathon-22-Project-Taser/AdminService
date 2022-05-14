@@ -40,27 +40,18 @@ public class AdminController {
     }
 
     /**
-     * initialize a Room and a Queue paired to the room
-     * @param identifier for the room to create
-     */
-    @PostMapping("/admin/room/initialize/{identifier}")
-    public void initializeRoom(@PathVariable final String identifier){
-
-    }
-
-    /**
      * Start a lecture
      */
-    @PostMapping("admin/realtime/start")
-    public void startRealtimeEvent() {
-
+    @PostMapping("admin/realtime/start/{identifier}")
+    public void startRealtimeEvent(@PathVariable final String identifier) {
+        service.startRealTimeEvent(identifier);
     }
 
     /**
      * Stop a lecture
      */
-    @PostMapping("admin/realtime/stop")
-    public void stopRealtimeEvent() {
-
+    @PostMapping("admin/realtime/stop/{identifier}")
+    public void stopRealtimeEvent(@PathVariable final String identifier) {
+       service.endRealTimeEvent(identifier);
     }
 }

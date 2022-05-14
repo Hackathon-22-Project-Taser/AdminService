@@ -9,14 +9,15 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Service
 public class AdminService {
     private Logger logger = LoggerFactory.getLogger(AdminService.class);
-    private final WebClient webClient;
+    private WebClient webClient;
 
     public AdminService(){
         logger.info("AdminService constructor");
-        webClient =  WebClient.create("http://localhost:8090/");
     }
+
     public void startQueue(String queueId){
         logger.info("try to start the queue: " + queueId);
+        webClient =  WebClient.create("http://localhost:8090/");
         webClient.post()
                 .uri("/queue/create/"+queueId)
                 .retrieve()
@@ -24,4 +25,13 @@ public class AdminService {
                 .block();
     }
 
+    public void startRealTimeEvent(String queueId){
+        webClient =  WebClient.create("http://localhost:8090/");
+        logger.info("try to start the real time event: " + queueId);
+    }
+
+    public void endRealTimeEvent(String queueId){
+        webClient =  WebClient.create("http://localhost:8090/");
+        logger.info("try to end the real time event: " + queueId);
+    }
 }

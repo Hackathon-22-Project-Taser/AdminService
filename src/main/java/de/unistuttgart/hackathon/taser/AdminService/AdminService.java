@@ -21,7 +21,7 @@ public class AdminService {
      */
     public void createQueue(String queueId){
         logger.info("try to start the queue: " + queueId);
-        webClient =  WebClient.create("http://localhost:8090/");
+        webClient =  WebClient.create("http://queue:8080/");
         webClient.post()
                 .uri("/queue/create/"+queueId)
                 .retrieve()
@@ -34,7 +34,7 @@ public class AdminService {
      */
     public void flushQueues(){
         logger.info("try to flushes the queues");
-        webClient =  WebClient.create("http://localhost:8090/");
+        webClient =  WebClient.create("http://queue:8080/");
         webClient.post()
                 .uri("/queues/flush")
                 .retrieve()

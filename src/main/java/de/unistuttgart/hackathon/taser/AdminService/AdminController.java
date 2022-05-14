@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Queue;
 
 @RestController
@@ -18,17 +20,7 @@ public class AdminController {
     @Autowired
     private AdminRepository adminRepository;
 
-    /**
-     * Request the queue of the room with the give identifier
-     * @param identifier of a specific room
-     * @return queue which is linked to the room
-     */
-    @GetMapping("/admin/queue/{identifier}")
-    public Queue<String> getQueueByRoom(@PathVariable final String identifier){
-        return new LinkedList<>();
-    }
-
-    /**
+     /**
      * Create a Room with the given identifier
      * @param identifier of the queue to create
      */

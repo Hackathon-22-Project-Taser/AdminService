@@ -1,5 +1,8 @@
 package de.unistuttgart.hackathon.taser.AdminService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,6 +13,10 @@ import java.util.Queue;
 
 @RestController
 public class AdminController {
+    Logger logger = LoggerFactory.getLogger(AdminController.class);
+
+    @Autowired
+    private AdminRepository adminRepository;
 
     /**
      * Request the queue of the room with the give identifier
@@ -27,7 +34,8 @@ public class AdminController {
      */
     @PostMapping("/admin/room/create/{identifier}")
     public void createRoom(@PathVariable final String identifier){
-
+        logger.info("create Room with identifier (roomNumber):" + identifier);
+        adminRepository.save(new Room(identifier, "Please put the Queue-Id here"));
     }
 
     /**

@@ -13,8 +13,8 @@ import java.util.Queue;
 
 @RestController
 public class AdminController {
-    Logger logger = LoggerFactory.getLogger(AdminController.class);
-
+    private Logger logger = LoggerFactory.getLogger(AdminController.class);
+    private AdminService service = new AdminService();
     @Autowired
     private AdminRepository adminRepository;
 
@@ -35,7 +35,8 @@ public class AdminController {
     @PostMapping("/admin/room/create/{identifier}")
     public void createRoom(@PathVariable final String identifier){
         logger.info("create Room with identifier (roomNumber):" + identifier);
-        adminRepository.save(new Room(identifier, "Please put the Queue-Id here"));
+        service.startQueue(identifier);
+        adminRepository.save(new Room(identifier));
     }
 
     /**

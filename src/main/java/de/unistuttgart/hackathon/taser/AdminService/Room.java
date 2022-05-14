@@ -10,8 +10,8 @@ public class Room {
 
     private String queueId;
 
-    public Room(final String roomId, final String queueId) {
+    public Room(final String roomId) {
         this.roomId = roomId;
-        this.queueId = queueId;
+        this.queueId = roomId;
     }
 }

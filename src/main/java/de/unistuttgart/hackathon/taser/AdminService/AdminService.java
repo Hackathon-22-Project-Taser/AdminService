@@ -14,7 +14,7 @@ public class AdminService {
 
     public AdminService(){
         logger.info("AdminService constructor");
-        webClient =  WebClient.create("http://queue:8080/");
+        webClient =  WebClient.create("http://localhost:8084/");
     }
 
     /**

@@ -42,9 +42,9 @@ public class AdminController {
     }
 
     /**
-     * The getter returns all rooms currently saved in the database
-     *
-     * @return
+     * This Method removes a room with a specific identifier
+     * @param identifier room that gets deleted
+     * @return deleted room
      */
     @DeleteMapping("/admin/room/delete/{identifier}")
     public Room deleteRoom(@PathVariable final String identifier) {

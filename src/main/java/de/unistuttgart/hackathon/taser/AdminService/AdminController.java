@@ -21,6 +21,7 @@ public class AdminController {
      *
      * @param identifier of the queue to create
      */
+    @CrossOrigin(origins = "*")
     @PostMapping("/admin/room/create/{identifier}")
     public List<Room> createRoom(@PathVariable final String identifier) {
         logger.info("create Room with identifier (roomNumber):" + identifier);
@@ -35,6 +36,7 @@ public class AdminController {
      *
      * @return
      */
+    @CrossOrigin(origins = "*")
     @GetMapping("/admin/rooms")
     public List<Room> getRooms() {
         logger.info("try to get all rooms");
@@ -46,6 +48,7 @@ public class AdminController {
      * @param identifier room that gets deleted
      * @return deleted room
      */
+    @CrossOrigin(origins = "*")
     @DeleteMapping("/admin/room/delete/{identifier}")
     public List<Room> deleteRoom(@PathVariable final String identifier) {
         logger.info("try to delete room: " + identifier);
@@ -62,6 +65,7 @@ public class AdminController {
     /**
      * Flushes the Queues
      */
+    @CrossOrigin(origins = "*")
     @PostMapping("admin/realtime/start/")
     public void flushQueues() {
         service.flushQueues();

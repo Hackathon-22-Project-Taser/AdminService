@@ -10,10 +10,11 @@ import org.springframework.web.reactive.function.client.WebClientRequestExceptio
 @Service
 public class AdminService {
     private Logger logger = LoggerFactory.getLogger(AdminService.class);
-    private WebClient webClient;
+    private final WebClient webClient;
 
     public AdminService(){
         logger.info("AdminService constructor");
+        webClient =  WebClient.create("http://queue:8080/");
     }
 
     /**
@@ -21,13 +22,15 @@ public class AdminService {
      * @param queueId Id for a specific Room
      */
     public void createQueue(String queueId){
-        logger.info("try to start the queue: " + queueId);
-        webClient =  WebClient.create("http://queue:8080/");
-        webClient.post()
-                .uri("/queue/create/"+queueId)
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
+        try {
+            webClient.post()
+                    .uri("/queue/create/" + queueId)
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block();
+        } catch (WebClientRequestException e) {
+            logger.error("cant connect to queueService to create a queue: " + e);
+        }
     }
 
     /**
@@ -35,7 +38,6 @@ public class AdminService {
      */
     public void flushQueues(){
         logger.info("try to flushes the queues");
-        webClient = WebClient.create("http://queue:8080/");
         try {
             webClient.post()
                     .uri("/queues/flush")
@@ -53,7 +55,6 @@ public class AdminService {
      */
     public void deleteQueue(final String identifier) {
         logger.info("try to flushes the queues");
-        webClient = WebClient.create("http://queue:8080/");
         try{
             webClient.delete()
                     .uri("queue/delete/" + identifier)

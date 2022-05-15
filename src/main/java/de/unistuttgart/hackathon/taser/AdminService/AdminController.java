@@ -51,6 +51,7 @@ public class AdminController {
         logger.info("try to delete room: " + identifier);
         if (adminRepository.findById(identifier).isEmpty()) {
             Room deletedRoom = adminRepository.findById(identifier).get();
+            service.deleteQueue(identifier);
             adminRepository.deleteById(identifier);
             return deletedRoom;
         }

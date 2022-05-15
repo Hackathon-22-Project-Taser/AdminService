@@ -41,4 +41,18 @@ public class AdminService {
                 .bodyToMono(String.class)
                 .block();
     }
+
+    /**
+     * This Method calls the QueueRest Controller and tries to delete a queue.
+     * @param identifier the queue that gets deleted
+     */
+    public void deleteQueue(final String identifier){
+        logger.info("try to flushes the queues");
+        webClient =  WebClient.create("http://queue:8080/");
+        webClient.delete()
+                .uri("        queue/delete/"+identifier)
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+    }
 }

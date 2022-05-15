@@ -22,6 +22,7 @@ public class AdminService {
      * @param queueId Id for a specific Room
      */
     public void createQueue(String queueId){
+        logger.info("try to connect to queueService to create queue ");
         try {
             webClient.post()
                     .uri("/queue/create/" + queueId)

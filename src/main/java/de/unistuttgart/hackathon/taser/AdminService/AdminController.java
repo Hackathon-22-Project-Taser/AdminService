@@ -47,13 +47,13 @@ public class AdminController {
      * @return deleted room
      */
     @DeleteMapping("/admin/room/delete/{identifier}")
-    public Room deleteRoom(@PathVariable final String identifier) {
+    public List<Room> deleteRoom(@PathVariable final String identifier) {
         logger.info("try to delete room: " + identifier);
         if (adminRepository.findById(identifier).isEmpty()) {
             Room deletedRoom = adminRepository.findById(identifier).get();
             service.deleteQueue(identifier);
             adminRepository.deleteById(identifier);
-            return deletedRoom;
+            return adminRepository.findAll();
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                 String.format("Room with ID %s not found!", identifier));

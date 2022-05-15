@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientRequestException;
 
 
 @Service
@@ -34,12 +35,16 @@ public class AdminService {
      */
     public void flushQueues(){
         logger.info("try to flushes the queues");
-        webClient =  WebClient.create("http://queue:8080/");
-        webClient.post()
-                .uri("/queues/flush")
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
+        webClient = WebClient.create("http://queue:8080/");
+        try {
+            webClient.post()
+                    .uri("/queues/flush")
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block();
+        } catch (WebClientRequestException e) {
+            logger.error("cant connect to queueService to flush the queues: " + e);
+        }
     }
 
     /**
@@ -49,10 +54,15 @@ public class AdminService {
     public void deleteQueue(final String identifier) {
         logger.info("try to flushes the queues");
         webClient = WebClient.create("http://queue:8080/");
-        webClient.delete()
-                .uri("queue/delete/" + identifier)
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
+        try{
+            webClient.delete()
+                    .uri("queue/delete/" + identifier)
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block();
+        }catch (WebClientRequestException e){
+            logger.error("cant connect to queueService to delete a queue: " + e);
+        }
+
     }
 }

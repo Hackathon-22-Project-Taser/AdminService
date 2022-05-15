@@ -22,12 +22,12 @@ public class AdminController {
      * @param identifier of the queue to create
      */
     @PostMapping("/admin/room/create/{identifier}")
-    public Room createRoom(@PathVariable final String identifier) {
+    public List<Room> createRoom(@PathVariable final String identifier) {
         logger.info("create Room with identifier (roomNumber):" + identifier);
         service.createQueue(identifier);
         Room room = new Room(identifier);
         adminRepository.save(room);
-        return room;
+        return adminRepository.findAll();
     }
 
     /**
